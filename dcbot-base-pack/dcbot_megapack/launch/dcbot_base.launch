@@ -1,0 +1,47 @@
+<launch>
+    <node name="dcbot_base_controller" pkg="dcbot_megapack" type="dcbot_base_controller.py">
+      <param name="controller_rate" value="10" />
+      <param name="tpr" value="187" />
+      <param name="base_width" value="0.20" />
+      <param name="wheel_diameter" value="0.09" />
+      <param name="base_frame_id" value="base_link" />
+      <param name="odom_frame_id" value="odom" />
+    </node>
+
+    <node name="left_motor" pkg="dcbot_megapack" type="dcbot_motor_driver.py" ns="left_wheel">
+      <param name="motor_port" value="1" />
+      <param name="enc_rate" value="20" />
+      <remap from="enc" to="/left_enc" />
+    </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="left_wheel">
+      <param name="Kp" value="0.25" />
+      <param name="Ki" value="0.4" />
+      <param name="Kd" value="0.0" />
+      <param name="upper_limit" value="80" />
+      <param name="lower_limit" value="-80" />
+      <param name="windup_limit" value="10" />
+      <param name="max_loop_frequency" value="100.0" />
+      <param name="min_loop_frequency" value="100.0" />
+      <remap from="setpoint" to="/left_spd" />
+     </node>
+
+    <node name="right_motor" pkg="dcbot_megapack" type="dcbot_motor_driver.py" ns="right_wheel">
+      <param name="motor_port" value="2" />
+      <param name="enc_rate" value="20" />
+      <remap from="enc" to="/right_enc" />
+    </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="right_wheel">
+      <param name="Kp" value="0.25" />
+      <param name="Ki" value="0.4" />
+      <param name="Kd" value="0.0" />
+      <param name="upper_limit" value="80" />
+      <param name="lower_limit" value="-80" />
+      <param name="windup_limit" value="10" />
+      <param name="max_loop_frequency" value="100.0" />
+      <param name="min_loop_frequency" value="100.0" />
+      <remap from="setpoint" to="/right_spd" />
+     </node>
+
+</launch>
